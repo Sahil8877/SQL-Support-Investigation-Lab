@@ -4,6 +4,19 @@ An application support investigation against the Olist Brazilian E-Commerce publ
 
 ---
 
+## Skills Demonstrated
+
+- SQL investigation under ambiguity, no assumed root cause
+- Multi table joins, join cardinality, row multiplication
+- Subqueries and derived tables for baselines and thresholds
+- Aggregates, `GROUP BY`, `HAVING` for breakdowns and structural checks
+- Self correcting a flawed metric mid investigation
+- Verification via inverse queries and cross checks
+- Business impact quantification and stakeholder handoff
+- Environment setup, schema verification, CLI based querying
+
+---
+
 ## The Ticket
 
 Ticket #INC2031 came in two ways at once. Finance flagged a discrepancy during their weekly reconciliation between total payments recorded and the total value of orders actually confirmed as delivered or shipped. Separately, a handful of customers had contacted support directly, asking why their order still showed as "processing" or "invoiced" days after they'd already received a payment confirmation. Support was asked to scope the issue and report findings before escalating to engineering.
@@ -248,10 +261,10 @@ Every payment type's share among stuck orders sits within about two percentage p
 
 Findings alone don't close a ticket, they set up the handoff. What this points to, concretely:
 
-- **Finance:** the 615 order list and the R$138,532.10 figure directly answer the original reconciliation discrepancy. Hand both over as the reconciling set rather than leaving it as a residual gap.
+- **Finance:** the 615 order list and the $138,532.10 figure directly answer the original reconciliation discrepancy. Hand both over as the reconciling set rather than leaving it as a residual gap.
 - **Engineering:** since no payment method shows a disproportionate share of the stuck orders, this isn't a single payment integration misbehaving. The more likely place to look is the order status update or reconciliation step itself, something that's failing to fire or failing silently across the board rather than for one payment path specifically.
-- **Monitoring:** the daily check proposed earlier (any order with a recorded payment and no status progression past a set number of days) is the concrete artifact that would have caught this on day one rather than at a weekly reconciliation. Worth proposing as a standing alert, not just a one-off query.
-- **Customer-facing:** the 615 affected customers are currently sitting with no resolution and, in some cases, no clear path forward. Worth flagging to whoever owns customer communications that a holding response (acknowledging the delay, without committing to a root cause before engineering confirms one) may be needed ahead of the underlying fix landing.
+- **Monitoring:** the daily check proposed earlier (any order with a recorded payment and no status progression past a set number of days) is the concrete artifact that would have caught this on day one rather than at a weekly reconciliation. Worth proposing as a standing alert, not just a one off query.
+- **Customer facing:** the 615 affected customers are currently sitting with no resolution and, in some cases, no clear path forward. Worth flagging to whoever owns customer communications that a holding response (acknowledging the delay, without committing to a root cause before engineering confirms one) may be needed ahead of the underlying fix landing.
 
 ---
 
