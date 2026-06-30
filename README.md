@@ -186,7 +186,7 @@ WHERE DATEDIFF((SELECT MAX(order_purchase_timestamp) FROM olist_orders_dataset),
     AND payments.order_id IS NOT NULL;
 ```
 
-**R$138,532.10** in recorded payment value sits behind the 615 unresolved orders. This is the figure that directly answers what finance flagged in the first place, money recorded against orders that were never confirmed as delivered or shipped.
+**$138,532.10** in recorded payment value sits behind the 615 unresolved orders. This is the figure that directly answers what finance flagged in the first place, money recorded against orders that were never confirmed as delivered or shipped.
 
 ![Total payment value tied to the 615 stuck orders](screenshots/14-total-payment-value.png)
 
@@ -238,7 +238,7 @@ Every payment type's share among stuck orders sits within about two percentage p
 - `processing` and `invoiced` orders together account for 0.62% of all orders (615 of 99,441), this was never a platform wide failure
 - Those statuses weren't promised an unusually long delivery window to begin with (28.24 vs 24.37 day average against delivered orders), so the issue isn't with what was promised, it's that nothing was ever delivered on it
 - All 615 of those orders have zero recorded delivery activity and sit open well past their own promised window, individual examples range from 64 to 743 days past purchase, confirmed as the full population rather than a subset by checking that no `processing`/`invoiced` order falls within the 24 day window
-- R$138,532.10 in recorded payment value is tied to these 615 orders, the figure that directly accounts for the discrepancy finance's reconciliation originally flagged
+- $138,532.10 in recorded payment value is tied to these 615 orders, the figure that directly accounts for the discrepancy finance's reconciliation originally flagged
 - Payment type shows no meaningful clustering, every method's share among stuck orders is within about 2 percentage points of its overall share, ruling out a payment method specific cause
 - A single order can carry more than one row in the payments table under Olist's installment model, confirmed directly, and accounted for in both the join and the total above
 
