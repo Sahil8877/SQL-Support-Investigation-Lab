@@ -238,7 +238,7 @@ Every payment type's share among stuck orders sits within about two percentage p
 - `processing` and `invoiced` orders together account for 0.62% of all orders (615 of 99,441), this was never a platform wide failure
 - Those statuses weren't promised an unusually long delivery window to begin with (28.24 vs 24.37 day average against delivered orders), so the issue isn't with what was promised, it's that nothing was ever delivered on it
 - All 615 of those orders have zero recorded delivery activity and sit open well past their own promised window, individual examples range from 64 to 743 days past purchase, confirmed as the full population rather than a subset by checking that no `processing`/`invoiced` order falls within the 24 day window
-- R$138,532.10 in recorded payment value is tied to these 615 orders, the figure that directly accounts for the discrepancy finance's reconciliation originally flagged
+- $138,532.10 in recorded payment value is tied to these 615 orders, the figure that directly accounts for the discrepancy finance's reconciliation originally flagged
 - Payment type shows no meaningful clustering, every method's share among stuck orders is within about 2 percentage points of its overall share, ruling out a payment method specific cause
 - A single order can carry more than one row in the payments table under Olist's installment model, confirmed directly, and accounted for in both the join and the total above
 
@@ -248,9 +248,9 @@ Every payment type's share among stuck orders sits within about two percentage p
 
 Findings alone don't close a ticket, they set up the handoff. What this points to, concretely:
 
-- **Finance:** the 615 order list and the R$138,532.10 figure directly answer the original reconciliation discrepancy. Hand both over as the reconciling set rather than leaving it as a residual gap.
+- **Finance:** the 615 order list and the $138,532.10 figure directly answer the original reconciliation discrepancy. Hand both over as the reconciling set rather than leaving it as a residual gap.
 - **Engineering:** since no payment method shows a disproportionate share of the stuck orders, this isn't a single payment integration misbehaving. The more likely place to look is the order status update or reconciliation step itself, something that's failing to fire or failing silently across the board rather than for one payment path specifically.
-- **Monitoring:** the daily check proposed earlier (any order with a recorded payment and no status progression past a set number of days) is the concrete artifact that would have caught this on day one rather than at a weekly reconciliation. Worth proposing as a standing alert, not just a one-off query.
+- **Monitoring:** the daily check proposed earlier (any order with a recorded payment and no status progression past a set number of days) is the concrete artifact that would have caught this on day one rather than at a weekly reconciliation. Worth proposing as a standing alert, not just a one off query.
 - **Customer-facing:** the 615 affected customers are currently sitting with no resolution and, in some cases, no clear path forward. Worth flagging to whoever owns customer communications that a holding response (acknowledging the delay, without committing to a root cause before engineering confirms one) may be needed ahead of the underlying fix landing.
 
 ---
